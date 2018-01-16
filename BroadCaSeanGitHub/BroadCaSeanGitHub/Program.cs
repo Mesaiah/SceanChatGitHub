@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BroadCaSeanGitHub
@@ -17,6 +18,28 @@ namespace BroadCaSeanGitHub
 
         static void Main(string[] args)
         {
+            //Creates and starts a thread that runs the same time with the rest of the program
+            var listenThread = new Thread(Listener);
+            listenThread.Start();
+            
+            //Creates a connection to be able to send the message
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+            socket.EnableBroadcast = true;
+            IPEndPoint ep = new IPEndPoint(IPAddress.Broadcast, ListenPort);
+
+            Thread.Sleep(1000);
+
+            while(true)
+            {
+                Console.Write(">");
+                string msg = Console.ReadLine();
+
+                byte[] sendbuf = Encoding.UTF8.GetBytes(msg);
+                socket.SendTo(sendbuf, ep);
+
+                Thread.Sleep(200);
+            }
 
         }
 
