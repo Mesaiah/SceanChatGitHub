@@ -30,11 +30,14 @@ namespace BroadCaSeanGitHub
 
             Thread.Sleep(1000);
 
+
+
             while(true)
             {
                 Console.Write(">");
                 string msg = Console.ReadLine();
 
+                Console.ForegroundColor = ConsoleColor.Blue;
                 byte[] sendbuf = Encoding.UTF8.GetBytes(msg);
                 socket.SendTo(sendbuf, ep);
 
