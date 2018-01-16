@@ -53,7 +53,7 @@ namespace BroadCaSeanGitHub
                 { 
                 IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, ListenPort);
                 byte[] bytes = listener.Receive(ref groupEP);
-                Console.WriteLine("Recieved broadcast from {0} : {1}\n", groupEP.ToString(),
+                Console.WriteLine("[{0}]Recieved broadcast from {1} : {2}\n", DateTime.Now, groupEP.ToString(),
                     Encoding.UTF8.GetString(bytes, 0, bytes.Length));
                 }
             }
