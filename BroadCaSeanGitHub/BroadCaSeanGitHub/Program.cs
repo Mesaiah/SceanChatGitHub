@@ -15,6 +15,7 @@ namespace BroadCaSeanGitHub
     class Program
     {
         private const int ListenPort = 11000;
+        static bool sent;
 
         static void Main(string[] args)
         {
@@ -36,7 +37,7 @@ namespace BroadCaSeanGitHub
             {
                 Console.Write(">");
                 string msg = Console.ReadLine();
-
+                sent = true;
                 Console.ForegroundColor = ConsoleColor.Blue;
                 byte[] sendbuf = Encoding.UTF8.GetBytes(msg);
                 socket.SendTo(sendbuf, ep);
@@ -56,8 +57,18 @@ namespace BroadCaSeanGitHub
                 { 
                 IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, ListenPort);
                 byte[] bytes = listener.Receive(ref groupEP);
-                Console.WriteLine("[{0}]Recieved broadcast from {1} : {2}\n", DateTime.Now, groupEP.ToString(),
-                    Encoding.UTF8.GetString(bytes, 0, bytes.Length));
+
+                    if (sent){
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("[{0}] You: {1}\n", DateTime.Now, Encoding.UTF8.GetString(bytes, 0, bytes.Length));
+                        sent = false;
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("[{0}]Recieved broadcast from {1} : {2}\n", DateTime.Now, groupEP.ToString(), Encoding.UTF8.GetString(bytes, 0, bytes.Length));
+                    }
+
                 }
             }
             catch (Exception e)
